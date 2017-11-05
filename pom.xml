@@ -8,6 +8,28 @@
     <packaging>mule</packaging>
 	<name>Mule git-poc1 Application</name>
 
+
+<profiles>
+     <profile>
+        <id>mule-extra-repos</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        <repositories>
+            <repository>
+                <id>mule-public</id>
+                <url> https://repository.mulesoft.org/nexus/content/repositories/public </url>
+            </repository>
+        </repositories>
+        <pluginRepositories>
+            <pluginRepository>
+                <id>mule-public</id>
+                <url> https://repository.mulesoft.org/nexus/content/repositories/public </url>
+            </pluginRepository>
+        </pluginRepositories>
+     </profile>
+ </profiles>
+
     <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -20,129 +42,115 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.mule.tools.maven</groupId>
-				<artifactId>mule-app-maven-plugin</artifactId>
-				<version>${mule.tools.version}</version>
-				<extensions>true</extensions>
-				 <configuration>
-      <deploymentType>cloudhub</deploymentType>
-      <muleVersion>${mule.version}</muleVersion>
-      <username>Ricky1</username>
-      <password>Password123</password>
-      <applicationName>git-poc1</applicationName>
-      <environment>Sandbox</environment>
-      <businessGroup>ISR INFO WAY, INC</businessGroup>
-      <!-- <region>eu-west-1</region> -->
-      <workers>1</workers>
-      <workerType>Micro</workerType>
+
+<plugin>
+  <groupId>org.mule.tools</groupId>
+  <artifactId>maven-mule-plugin</artifactId>
+  <version>1.9</version>
+  <extensions>true</extensions>
+  <configuration>
+    <excludeMuleDependencies>false</excludeMuleDependencies>
+    <copyToAppsDirectory>true</copyToAppsDirectory>
+    <inclusions>
+      <inclusion>
+        <groupId>org.mule.modules</groupId>
+        <artifactId>mule-module-requester</artifactId>
+      </inclusion>
+      <inclusion>
+        <groupId>org.mule.modules</groupId>
+        <artifactId>mule-module-requester</artifactId>
+      </inclusion>
+      <inclusion>
+        <groupId>org.mule.modules</groupId>
+        <artifactId>mule-module-apikit</artifactId>
+      </inclusion>
+    </inclusions>
   </configuration>
-  <executions>
-      <execution>
-          <id>deploy</id>
-          <phase>deploy</phase>
-          <goals>
-              <goal>deploy</goal>
-          </goals>
-      </execution>
-  </executions> 
-			</plugin>
-			
-			
-			
-			
-			
-			<plugin>
- 
-                 <groupId>org.mule.tools.maven</groupId>
- 
-                 <artifactId>cloudhub-maven-plugin</artifactId>
- 
-                 <version>2.0</version>
- 
-                 <configuration>
-                     <deploymentType>cloudhub</deploymentType>
-                     <muleVersion>3.8.5</muleVersion>
-                     <username>Ricky1</username>
-                     <password>Password123</password>
-                     <enviornment>Sandbox</enviornment>
-                 </configuration>
- 
-                 <executions>
- 
-                     <execution>
- 
-                         <id>deploy</id>
- 
-                         <phase>deploy</phase>
- 
-                         <goals>
- 
-                             <goal>deploy</goal>
- 
-                         </goals>
- 
-                     </execution>
- 
-                 </executions>
- 
-             </plugin>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.7</version>
-				<executions>
-					<execution>
-						<id>add-resource</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>add-resource</goal>
-						</goals>
-						<configuration>
-							<resources>
-								<resource>
-									<directory>src/main/app/</directory>
-								</resource>
-								<resource>
-									<directory>mappings/</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		<plugin>
-                <groupId>com.mulesoft.munit.tools</groupId>
-                <artifactId>munit-maven-plugin</artifactId>
-                <version>${munit.version}</version>
-                <executions>
-                    <execution>
-                        <id>test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <coverage>
-                        <runCoverage>true</runCoverage>
-                        <formats>
-                            <format>html</format>
-                        </formats>
-                    </coverage>
-                </configuration>
-            </plugin>
-        </plugins>
+</plugin>
+
+
+
+
+
+<plugin>
+    <groupId>org.mule.tools.maven</groupId>
+    <artifactId>mule-maven-plugin</artifactId>
+    <version>1.9</version>
+    <configuration>
+        <deploymentType>cloudhub</deploymentType>
+        <!-- muleVersion is the runtime version as it appears on the CloudHub interface -->
+        <muleVersion>3.8.5</muleVersion>
+        <username>Ricky1</username>
+        <password>Password123</password>
+        <redeploy>true</redeploy>
+        <environment>Sandbox</environment>
+    </configuration>
+    <executions>
+        <execution>
+            <id>deploy</id>
+            <phase>deploy</phase>
+            <goals>
+                <goal>deploy</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+
+
+
+
+
+
+
+
+
+	<plugin>
+		<groupId>org.codehaus.mojo</groupId>
+		<artifactId>build-helper-maven-plugin</artifactId>
+		<version>1.7</version>
+		<executions>
+			<execution>
+				<id>add-resource</id>
+				<phase>generate-resources</phase>
+				<goals>
+					<goal>add-resource</goal>
+				</goals>
+				<configuration>
+					<resources>
+						<resource>
+							<directory>src/main/app/</directory>
+						</resource>
+						<resource>
+							<directory>mappings/</directory>
+						</resource>
+					</resources>
+				</configuration>
+			</execution>
+		</executions>
+	</plugin>
+	<plugin>
+		<groupId>com.mulesoft.munit.tools</groupId>
+		<artifactId>munit-maven-plugin</artifactId>
+		<version>${munit.version}</version>
+		<executions>
+			<execution>
+				<id>test</id>
+				<phase>test</phase>
+				<goals>
+					<goal>test</goal>
+				</goals>
+			</execution>
+		</executions>
+		<configuration>
+			<coverage>
+				<runCoverage>true</runCoverage>
+				<formats>
+					<format>html</format>
+				</formats>
+			</coverage>
+		</configuration>
+	</plugin>
+</plugins>
 	<testResources>
             <testResource>
                 <directory>src/test/munit</directory>
