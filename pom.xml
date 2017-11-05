@@ -25,9 +25,27 @@
 				<artifactId>mule-app-maven-plugin</artifactId>
 				<version>${mule.tools.version}</version>
 				<extensions>true</extensions>
-				<configuration>
-                    <copyToAppsDirectory>true</copyToAppsDirectory>
-				</configuration>
+				 <configuration>
+      <deploymentType>cloudhub</deploymentType>
+      <muleVersion>${mule.version}</muleVersion>
+      <username>Ricky1</username>
+      <password>Password123</password>
+      <applicationName>git-poc1</applicationName>
+      <environment>Sandbox</environment>
+      <businessGroup>ISR INFO WAY, INC</businessGroup>
+      <!-- <region>eu-west-1</region> -->
+      <workers>1</workers>
+      <workerType>Micro</workerType>
+  </configuration>
+  <executions>
+      <execution>
+          <id>deploy</id>
+          <phase>deploy</phase>
+          <goals>
+              <goal>deploy</goal>
+          </goals>
+      </execution>
+  </executions> 
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
